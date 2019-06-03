@@ -12,19 +12,22 @@ async function main() {
         terminal: true
     });
     welcomeThePlayer();
-    await enterCommmandLoop(prompt);
+    await enterCommandLoop(prompt);
     prompt.close();
 }
 
 const getOut = ["quit", "exit", "go away", "fuck off"];
 
-async function enterCommmandLoop(prompt: any) {
-    while (true) {
-        const command: string = await prompt.questionAsync("> ");
-        if (getOut.includes(command)) {
-            return;
-        }
+async function enterCommandLoop(prompt: any): Promise<void> {
+    const command: string = await prompt.questionAsync("> ");
+    if (getOut.includes(command)) {
+        return;
+    } else if ("look" === command) {
+        console.log("You are in a vast hall. It feels faintly floofy.");
+        return enterCommandLoop(prompt);
+    } else {
         console.log(command);
+        return enterCommandLoop(prompt);
     }
 }
 
