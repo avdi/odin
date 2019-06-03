@@ -1,2 +1,7 @@
 #!/usr/bin/node
-console.log("Hello world");
+welcomeThePlayer();
+
+function welcomeThePlayer() {
+    const theWelcomeMessage = "Welcome to the caaaaaaves of Oooooooodiiiiiinnn";
+    console.log(theWelcomeMessage);
+}
