@@ -1,0 +1,22 @@
+{
+  "name": "odin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "keywords": [
+    "floof",
+    "chonkers"
+  ],
+  "author": "Avdicado",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^3.5.1"
+  },
+  "bin": {
+    "odin": "index.js"
+  }
+}
