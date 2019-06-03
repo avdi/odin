@@ -1,17 +1,19 @@
 #!/usr/bin/node
-import * as readline from "readline";
-const prompt = readline.createInterface({ input: process.stdin, output: process.stdout });
+import readline from "readline-promise";
+const prompt = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+    terminal: true
+});
 
 welcomeThePlayer();
-const p = new Promise((resolve, reject) => {
-    prompt.question("> ", answer => {
-        resolve(answer);
-    });
-});
-p.then(answer => {
-    console.log(answer);
+echoACommand(prompt);
+
+async function echoACommand(prompt: any) {
+    const command: string = await prompt.questionAsync("> ");
+    console.log(command);
     prompt.close();
-})
+}
 
 function welcomeThePlayer() {
     const theWelcomeMessage = "Welcome to the caaaaaaves of Oooooooodiiiiiinnn";
