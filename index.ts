@@ -14,10 +14,12 @@ function main() {
     melvin(prompt);
 }
 
+const getOut = ["quit", "exit", "go away", "fuck off"];
+
 async function melvin(prompt: any) {
     while (true) {
         const command: string = await prompt.questionAsync("> ");
-        if ("quit" === command) {
+        if (getOut.includes(command)) {
             prompt.close();
             return;
         }
