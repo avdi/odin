@@ -18,16 +18,27 @@ async function main() {
 
 const getOut = ["quit", "exit", "go away", "fuck off"];
 
-async function enterCommandLoop(prompt: any): Promise<void> {
+class CommandPile {
+    public takeAction(command: any) {
+        command = command;
+        throw new Error("I hate you");
+    }
+}
+
+async function enterCommandLoop(prompt: any, commandPile: CommandPile): Promise<void> {
     const command: string = await prompt.questionAsync("> ");
-    if (getOut.includes(command)) {
-        return;
-    } else if ("look" === command) {
-        console.log("You are in a vast hall. It feels faintly floofy.");
-        return enterCommandLoop(prompt);
-    } else {
-        console.log(command);
-        return enterCommandLoop(prompt);
+    try {
+        return commandPile.takeAction(command);
+    } catch {
+        if (getOut.includes(command)) {
+            return;
+        } else if ("look" === command) {
+            console.log("You are in a vast hall. It feels faintly floofy.");
+            return enterCommandLoop(prompt, commandPile);
+        } else {
+            console.log(command);
+            return enterCommandLoop(prompt, commandPile);
+        }
     }
 }
 
