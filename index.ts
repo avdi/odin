@@ -2,8 +2,20 @@
 import readline from "readline-promise";
 import { promisify } from "util";
 
+class CommandPile {
+    public takeAction(command: any, loopParams: HowToCommandLoop) {
+        if ("scritch" === command) {
+            console.log("SO FLOOFY");
+            return enterCommandLoop(loopParams);
+        }
+        throw new Error("I hate you");
+    }
+}
 
-main();
+
+main().catch(reason => {
+    console.log(reason);
+});
 
 async function main() {
     const prompt = readline.createInterface({
@@ -11,33 +23,31 @@ async function main() {
         output: process.stdout,
         terminal: true
     });
-    welcomeThePlayer();
-    await enterCommandLoop(prompt);
-    prompt.close();
+    try {
+        welcomeThePlayer();
+        await enterCommandLoop({ prompt, commandPile: new CommandPile() });
+    } finally {
+        prompt.close();
+    }
 }
 
 const getOut = ["quit", "exit", "go away", "fuck off"];
 
-class CommandPile {
-    public takeAction(command: any) {
-        command = command;
-        throw new Error("I hate you");
-    }
-}
-
-async function enterCommandLoop(prompt: any, commandPile: CommandPile): Promise<void> {
+type HowToCommandLoop = { prompt: any; commandPile: CommandPile; };
+async function enterCommandLoop(params: HowToCommandLoop): Promise<void> {
+    const { prompt, commandPile } = params;
     const command: string = await prompt.questionAsync("> ");
     try {
-        return commandPile.takeAction(command);
+        return commandPile.takeAction(command, params);
     } catch {
         if (getOut.includes(command)) {
             return;
         } else if ("look" === command) {
             console.log("You are in a vast hall. It feels faintly floofy.");
-            return enterCommandLoop(prompt, commandPile);
+            return enterCommandLoop({ prompt, commandPile });
         } else {
             console.log(command);
-            return enterCommandLoop(prompt, commandPile);
+            return enterCommandLoop({ prompt, commandPile });
         }
     }
 }
